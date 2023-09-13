@@ -1,0 +1,45 @@
+
+
+
+
+
+
+.section{
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    
+}
+.box-con{
+    align-items: center;
+    display: flex;
+}
+
+.box-con h2{
+    text-align: center;
+    padding-top: 5vh;
+    color: #ffff;
+}
+
+.box-con p{
+    text-align: center;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    color: #ffff;
+}
+
+
+.box{
+    background-color: #3955f3;
+    height: 300px;
+    width: 450px;
+    margin: 30px;
+    justify-content: center;
+
+}
+
+.box hr{
+	border: 2px solid gold;
+	width: 115px;
+	margin-top: 0;
+}

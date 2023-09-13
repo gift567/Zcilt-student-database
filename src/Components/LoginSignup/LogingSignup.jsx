@@ -1,52 +1,104 @@
-import React, { useState } from 'react'
+
 import './LoginSignup.css'
+import { database } from '../FirebaseConfig'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 
 import mail from '../Assests/mail.png'
 import pass from '../Assests/pass.png'
-import person from '../Assests/person.png'
+import { useNavigate} from 'react-router-dom'
+import { useState } from 'react'
+
 
 export const LogingSignup = () => {
 
-    const[action,setAction]= useState("Sign Up"); 
+    const [Login,setLogin] = useState(false)
+
+    const history = useNavigate()
+
+
+    const handleSubmit =(e,type)=>{
+        e.preventDefault()
+        const email = e.target.email.value
+        const password = e.target.password.value
+
+        if(type === 'Signup'){
+
+
+        createUserWithEmailAndPassword(database,email,password).then(data=>{
+            console.log(data,"authData")
+            history('/Select')
+        
+        }).catch(err=>{
+            alert(err.code)
+            setLogin(true)
+        })
+    }else{
+
+        
+        signInWithEmailAndPassword(database,email,password).then(data=>{
+            console.log(data,"authData")
+            history('/Select')
+        
+        }).catch(err=>{
+            alert(err.code)
+        })
+    }
+    }
+
   return (
+    
+
+   
     <div className='container'>
+
+        {/* <div className='row'>
+            <div onClick={()=>setLogin(false)}>Sign Up</div>
+            
+            
+        </div> */}
+         <form onSubmit={(e)=>handleSubmit(e,Login?'Login':'Signup')}>
         <div className="header">
 
             <div className="heading">Zambia Chartered Institute of Transport and Logistics</div>
-            <div className="heading">Student Management Sytem</div>
+            <div className="heading"> Management Sytem</div>
             
-            <div className="text">{action}</div>
+            <div className="text">{Login?'Login':'SignUp'}</div>
             <div className="underline"></div>
             <div className="inputs">
 
-                {/* adding the operator that hide */}
-                {action==="Login"?<div></div>:   <div className="input">
-                    <img src={person} alt=''/>
-                    <input type='text' placeholder='Enter Full Names'/>
-                </div>
-}
+            
+           
+
              
                 <div className="input">
                     <img src={mail} alt=''/>
-                    <input type='email' placeholder='Enter Email Address'/>
+                    <input name='email' type='email' placeholder='Enter Email Address'/>
                 </div>
 
 
                 <div className="input">
                     <img src={pass} alt=''/>
-                    <input type='password' placeholder='Enter Password'/>
+                    <input name='password' type='password' placeholder='Enter Password'/>
                 </div>
             </div>
 
-            {action==="Sign Up"? <div></div>:<div className="forgot-password">Forgot Password? <span>Click Here</span></div>}
-
+         
+            <div className="forgot-password"  onClick={()=>setLogin(true)}>Already Have an Account? <span>Click Here</span></div>
             <div className="submit-container">
-                <div className={action==="Login"?"submit gray":"submit"} onClick={()=>{setAction("Sign Up")}}>Sign Up</div>
-                <div className={action==="Sign Up"?"submit gray":"submit"} onClick={()=>{setAction("Login")}}>Login</div>
+                
+                    
+                    <button className='submit'>{Login?'Login':'SignUp'}</button>
+               
             </div>
         </div>
+
+        </form>
     </div>
+
+    
   )
 }
+
+
 
 export default LogingSignup
